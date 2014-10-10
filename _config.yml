@@ -13,7 +13,7 @@ links:
   - name:         Categories
     url:          /tags
   - name:         GitHub
-    url:          http://github.com/SpeedMe
+    url:          https://github.com/xule1991
     external:     true
   - name:         About
     url:          /about
