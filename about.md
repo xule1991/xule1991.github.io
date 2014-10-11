@@ -2,6 +2,7 @@
 layout: page
 title: About
 ---
+<img src="{{site.baseurl}}/images/me.jpg" alt="scribble" /">
 ##hello！
 - 徐乐
 - 南京大学金陵学院 2009 级本科 软件工程专业
