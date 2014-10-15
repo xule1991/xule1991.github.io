@@ -9,7 +9,7 @@ tags: [LeetCode]
 >time,I just know batch operation.Today,I meet batch operation again,so record it here.
 
 
-<h3>Batch processing</h3>
+<h3><strong>Batch processing</strong></h3>
 
 A naive approach to inserting 100,000 rows in the database using Hibernate might look like this:
 
@@ -45,7 +45,7 @@ You can also do this kind of work in a process where interaction with the second
 However, this is not absolutely necessary, since we can explicitly set the CacheMode to disable interaction with the second-level cache.
 
 
-<h3>Batch inserts</h3>
+<h3><strong>Batch inserts</strong></h3>
 
 When making new objects persistent flush() and then clear() the session regularly in order to control the size of the first-level cache.
 
