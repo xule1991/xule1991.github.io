@@ -4,7 +4,7 @@ title: InverseAttributeInHibernate
 tags: [LeetCode]
 ---
 
-> Inverse is a attribute to decide which party to maintain the relationship of two objects.If one party assign 
+> Inverse is an attribute to decide which party to maintain the relationship of two objects.If one party assign 
 >"inverse = false" (which is default),then the relationship is maintained by the opposite party.This attribute 
 >will help hibernate to decide which sqls will be created
 
