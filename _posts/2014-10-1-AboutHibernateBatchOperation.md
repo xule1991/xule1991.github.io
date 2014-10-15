@@ -43,6 +43,29 @@ You can also do this kind of work in a process where interaction with the second
 ```
 
 However, this is not absolutely necessary, since we can explicitly set the CacheMode to disable interaction with the second-level cache.
+
+
+Batch inserts
+
+When making new objects persistent flush() and then clear() the session regularly in order to control the size of the first-level cache.
+
+```java
+		Session session = sessionFactory.openSession();
+	Transaction tx = session.beginTransaction();
+	   
+	for ( int i=0; i<100000; i++ ) {
+		Customer customer = new Customer(.....);
+		session.save(customer);
+		if ( i % 20 == 0 ) { //20, same as the JDBC batch size
+			//flush a batch of inserts and release memory:
+			session.flush();
+			session.clear();
+		}
+	}
+	   
+	tx.commit();
+	session.close();
+```
 	
 	乐此不疲～
 
