@@ -1,7 +1,7 @@
 ---
 layout: post
 title: ObjectClassInJava
-tags: [LeetCode]
+tags: [CoreJava]
 ---
 
 > The class Object is very useful and a lot of advanced functions of java is based on this class
