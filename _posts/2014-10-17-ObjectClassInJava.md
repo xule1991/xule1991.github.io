@@ -16,7 +16,7 @@ summarized as follows:
 
 
 ```
-  The method <strong>clone</strong> is used to make a duplicate of an object.
+  The method "clone" is used to make a duplicate of an object.
 ```
 
 ```
