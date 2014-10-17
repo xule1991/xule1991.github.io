@@ -7,10 +7,10 @@ tags: [Reading]
 > Some understandings from reading reading Code complete(2nd)
 
 
->"ADT" abstract data type:
+"ADT" abstract data type:
 
 ```	
-	We usually 
+	We usually make ADT for common bottom layer data type to malipulate that data, do not operate bottom layer data directly
 ```
 
 ```
