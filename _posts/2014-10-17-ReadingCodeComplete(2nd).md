@@ -10,7 +10,18 @@ tags: [Reading]
 "ADT" abstract data type:
 
 ```	
-	We usually make ADT for common bottom layer data type to malipulate that data, do not operate bottom layer data directly
+	We usually make ADT for common bottom layer data type to malipulate that data, do not operate bottom layer data directly,sth as follows:
+	
+	currentFont.setSize();
+	currentFont.setBoldOn();
+	currentFont.setBoldOff();
+	currentFont.setItalicOn();
+	currentFont.setItalicOff();
+	currentFont.setTypeFace();
+	
+	etc.
+	
+	If you are not use OOP, you can not do this kind of operation on a object, you need to write the method directly, 
 ```
 
 ```
