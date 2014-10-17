@@ -7,7 +7,8 @@ tags: [LeetCode]
 > The class Object is very useful and a lot of advanced functions of java is based on this class
 >so it is very helpful to know about the api of this class.
 
-<h2><strong>The Class Object<strong><h2>
+<h2><strong>The Class Object<strong></h2>
+
 	The class Object is a superclass (§8.1.4) of all other classes.
 All class and array types inherit (§8.4.8) the methods of class Object, which are
 summarized as follows:
