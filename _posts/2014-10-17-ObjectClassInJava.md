@@ -9,8 +9,8 @@ tags: [LeetCode]
 
 <h2><strong>The Class Object<strong></h2>
 
-	The class Object is a superclass (§8.1.4) of all other classes.
-All class and array types inherit (§8.4.8) the methods of class Object, which are
+	The class Object is a superclass of all other classes.
+All class and array types inherit the methods of class Object, which are
 summarized as follows:
 
 
@@ -20,35 +20,38 @@ summarized as follows:
 ```
 
 ```
-  
+  The method equals defines a notion of object equality, which is based on value,
+not reference, comparison.
 ```
 
 ```
-  
+  The method finalize is run just before an object is destroyed
 ```
 
 ```
-  
+  The method getClass returns the Class object that represents the class of the
+object.
+A Class object exists for each reference type. It can be used, for example,
+to discover the fully qualified name of a class, its members, its immediate
+superclass, and any interfaces that it implements.
+The type of a method invocation expression of getClass is Class<? extends
+|T|> where T is the class or interface searched for getClass.
+A class method that is declared synchronized synchronizes on the
+monitor associated with the Class object of the class.
 ```
 
 ```
-  
+  The method hashCode is very useful, together with the method equals, in
+hashtables such as java.util.Hashmap.
 ```
 
 ```
-  
+  The methods wait, notify, and notifyAll are used in concurrent programming
+using threads
 ```
 
 ```
-  
-```
-
-```
-  
-```
-
-```
-  
+  The method toString returns a String representation of the object
 ```
 
 
