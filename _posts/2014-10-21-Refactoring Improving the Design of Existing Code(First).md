@@ -4,7 +4,7 @@ title: Refactoring:ImprovingTheDesignOfExistingCode(First)
 tags: [Reading]
 ---
 
->	Refactor method used:
+>Refactor method used:
 >Extract Method, Move Method, Replace Conditional with Polymorphism, 
 >Self Encapsulate Field, Replace Type Code with State/Strategy,etc.
 >All this refacting methods make assigning responsibilities more reasonaly,
@@ -135,7 +135,7 @@ Another thing need to be considered is whether the method has local variable:
 
 	乐此不疲～
 
-2014-10-21 15:00:11
+2014-10-17 10:00:11
 
 
 
