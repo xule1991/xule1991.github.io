@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Refactoring:ImprovingTheDesignOfExistingCode(First)
+title: Refactoring:ImprovingTheDesignOfExistingCode1
 tags: [Reading]
 ---
 
@@ -92,38 +92,276 @@ Another thing need to be considered is whether the method has local variable:
 1. method without local variable:
 
 ```	
+	void printOwing() {
+		Enumeration e = _orders.elements();
+		double outstanding = 0.0;
+		
+		//print banner
+		System.out.println("***********************");
+		System.out.println("**** Customer Owes ****");
+		System.out.println("***********************");
+		
+		//calculate outstanding
+		while (e.hasMoreElements()) {
+			Order each = (Order) e.nextElement();
+			outstanding += each.getAmount();
+		}
+		
+		// print details
+		System.out.println("names: " + _name);
+		System.out.println("amount" + outstanding);
+	}
+```
+
+change to 
+
+```	
+	void printOwing() {
+		Enumeration e = _orders.elements();
+		double outstanding = 0.0;
+		
+		printBanner();
+		
+		//calculate outstanding
+		while (e.hasMoreElements()) {
+			Order each = (Order) e.nextElement();
+			outstanding += each.getAmount();
+		}
+		
+		// print details
+		System.out.println("names: " + _name);
+		System.out.println("amount" + outstanding);
+	}
+	
+	void printBanner() {
+		//print banner
+		System.out.println("***********************");
+		System.out.println("**** Customer Owes ****");
+		System.out.println("***********************");
+	}
+```
+
+With local variable
+
+```	
+	void printOwing() {
+		Enumeration e = _orders.elements();
+		double outstanding = 0.0;
+		
+		printBanner();
+		
+		//calculate outstanding
+		while (e.hasMoreElements()) {
+			Order each = (Order) e.nextElement();
+			outstanding += each.getAmount();
+		}
+		
+		printDetails(outstanding);
+	}
+	
+	void printDetails(double outstanding) {
+		// print details
+		System.out.println("names: " + _name);
+		System.out.println("amount" + outstanding);
+	}
+```
+
+Extract calculation
+```	
+	void printOwing() {
+		printBanner();
+		double outstanding = getOutstanding();
+		printDetails(outstanding);
+	}
+	
+	double getOutstanding() {
+		Enumeration e = _orders.elements();
+		double result = 0.0;
+		//calculate outstanding
+		while (e.hasMoreElements()) {
+			Order each = (Order) e.nextElement();
+			result += each.getAmount();
+		}
+		return result;
+	}
+```
+
+The original code is like this:
+```	
+void printOwing() {
+		Enumeration e = _orders.elements();
+		double outstanding = 0.0;
+		
+		//print banner
+		System.out.println("***********************");
+		System.out.println("**** Customer Owes ****");
+		System.out.println("***********************");
+		
+		//calculate outstanding
+		while (e.hasMoreElements()) {
+			Order each = (Order) e.nextElement();
+			outstanding += each.getAmount();
+		}
+		
+		// print details
+		System.out.println("names: " + _name);
+		System.out.println("amount" + outstanding);
+	}
+```
+
+After Extraction:
+
+```	
+	void printOwing() {
+		printBanner();
+		double outstanding = getOutstanding();
+		printDetails(outstanding);
+	}
+	
+	void printBanner() {
+		//print banner
+		System.out.println("***********************");
+		System.out.println("**** Customer Owes ****");
+		System.out.println("***********************");
+	}
+	
+	double getOutstanding() {
+		Enumeration e = _orders.elements();
+		double result = 0.0;
+		//calculate outstanding
+		while (e.hasMoreElements()) {
+			Order each = (Order) e.nextElement();
+			result += each.getAmount();
+		}
+		return result;
+	}
+	
+	void printDetails(double outstanding) {
+		// print details
+		System.out.println("names: " + _name);
+		System.out.println("amount" + outstanding);
+	}
+
+```
+
+Inline Method:
+
+change this kind of code:
+
+```	
+	int getRating() {
+		return (moreThanFileLateDeliveries()) ? 2 : 1;
+	}
+	
+	boolean moreThanFileLateDeliveries() {
+		return _numberOfLateDeliveries > 5;
+	}
+```
+
+to:
+
+```	
+int getRating() {
+		return (_numberOfLateDeliveries > 5) ? 2 : 1;
+	}
+```
+
+Inline Temp:
+
+if you have a temp just assigned once,like below:
+```	
+	double basePrice = anOrder.basePrice();
+	return (basePrice > 1000);
+```
+
+to:
+
+```
+	return (anOrder.basePrice() > 1000);
+```
+
+Replace Temp with Query
+
+```	
+double basePrice = _quantity * _itemPrice;
+	if (basePrice > 1000) 
+		return basePrice * 0.95;
+	else 
+		return basePrice * 0.98;
+```
+
+to
+
+```	
+	if (basePrice() > 1000) 
+		return basePrice * 0.95;
+	else 
+		return basePrice * 0.98;
+		
+	...
+	double basePrice() { // The query
+		return _quantity * _itemPrice;
+	}
+```
+
+Local usually make it hard to extract method, so it is a common usage to make local variables to queries.
+
+Example:
+
+```	
+	double getPrice() {
+		int basePrice = _quantity * _itemPrice;
+		double discountFactor;
+		if (basePrice > 1000) 
+			discountFactor = 0.95;
+		else
+			discountFactor = 0.98;
+		return basePrice * discountFactor;
+	}
+```
+
+We want to change all these two local variable;
+first, we try to make them final, to find whether they just be assigned once.
+```	
+	double getPrice() {
+		final int basePrice = _quantity * _itemPrice;
+		final double discountFactor;
+		if (basePrice > 1000) 
+			discountFactor = 0.95;
+		else
+			discountFactor = 0.98;
+		return basePrice * discountFactor;
+	}
+```
+
+then extract local variable to query:
+ 
+```	
+	double getPrice() {
+		return basePrice() * discountFactor();
+	}
+	
+	private double discountFactor() {
+		if (basePrice() > 1000) 
+			return 0.95;
+		else
+			return 0.98;
+	}
+	
+	private int basePrice() {
+		return _quantity * _itemPrice;
+	}
+```
+```	
+```
+```	
+```
+```	
 ```
 
 
 ```	
 ```
-
-```	
-```
-
-```	
-```
-
-```	
-```
-```	
-```
-```	
-```
-```	
-```
-```	
-```
-```	
-```
-```	
-```
-
-
-
-
-
-
 
 
 
@@ -135,7 +373,7 @@ Another thing need to be considered is whether the method has local variable:
 
 	乐此不疲～
 
-2014-10-17 10:00:11
+2014-10-21 15:00:11
 
 
 
