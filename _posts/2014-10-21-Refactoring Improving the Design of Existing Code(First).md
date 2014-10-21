@@ -167,6 +167,7 @@ With local variable
 ```
 
 Extract calculation
+
 ```	
 	void printOwing() {
 		printBanner();
