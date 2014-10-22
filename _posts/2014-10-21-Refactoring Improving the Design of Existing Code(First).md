@@ -210,7 +210,9 @@ void printOwing() {
 	}
 ```
 
+
 After Extraction:
+
 
 ```	
 	void printOwing() {
@@ -353,24 +355,115 @@ then extract local variable to query:
 		return _quantity * _itemPrice;
 	}
 ```
+
+Introduce Explaining Variable
+
+change 
+
 ```	
+	if ((platform.toUpperCase().indexOf("MAC") > -1) &&
+	(brower.toUpperCase().indexOf("IE") > -1) &&
+	wasInitialized() && resize > 0) {
+		
+		//do something
+	}
 ```
+
+to 
+
 ```	
+	final boolean isMacOs = platform.toUpperCase().indexOf("MAC") > -1;
+	final boolean isIEBrowser = browser.toUpperCase().indexOf("IE") > -1;
+	final boolean wasResized = resize > 0;
+	
+	if (isMacOs && isIEBrowser && wasResized) {
+		//do something
+	}
+	
 ```
+
+Motivation:
+	expression sometimes will be very complicated and hard to read,in this case, local variable will help you
+to convert expression to the format which is easier to maintain.
+
+Split Temporary Variable
+
 ```	
+	double temp = 2 * (_height * _width);
+	System.out.println(temp);
+	temp = _height * _width;
+	System.out.println(temp);
+```
+
+to
+
+```
+	final double perimeter = 2 * (_height * _width);
+	System.out.println(perimeter);
+	final double area = _height * _width;
+	System.out.println(area);	
+```
+
+Motivation:
+	
+Remove Assignments to Parameters
+
+change 
+
+```	
+int discount (int inputVal, int quantity, int yearToDate) {
+	if (inputVal > 50) inputVal -= 2;
+}
+```
+
+to
+
+```	
+int discount (int inputVal, int quantity, int yearToDate) {
+	int result = inputVal;
+	if (inputVal > 50) result -= 2;
+}
+```
+
+Motivation
+
+
+```	
+	void aMethod(Object foo) {
+		foo.modifyInSomeWay();		// that's OK
+		foo = anotherObject;		// trouble and despair will follow you
+	}
 ```
 
 
 ```	
 ```
 
+```	
+```
 
+```	
+```
 
 ```	
 ```
 
 ```	
 ```
+
+```	
+```
+
+```	
+```
+
+```	
+```
+
+```	
+```
+
+
 
 	乐此不疲～
 
