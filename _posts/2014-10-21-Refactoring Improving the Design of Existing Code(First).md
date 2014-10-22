@@ -687,7 +687,7 @@ Replace Type Code with Class
 		
 		private int _bloodGroup;
 		
-		public Person(int bloodGroup){{
+		public Person(int bloodGroup){
 			_bloodGroup = bloodGroup;
 		}
 		public void setBloodGroup(int arg) {
@@ -733,7 +733,7 @@ class Person {
 		
 		private int _bloodGroup;
 		
-		public Person(int bloodGroup){{
+		public Person(int bloodGroup){
 			_bloodGroup = bloodGroup;
 		}
 		public void setBloodGroup(int arg) {
