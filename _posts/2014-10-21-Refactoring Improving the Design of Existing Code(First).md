@@ -922,6 +922,98 @@ Replace Constructor with Factory Method
 ```
 
 ```	
+change:
+	class Employee {
+		static Employee create(int type) {
+			switch (type) {
+				case ENGINEER:
+					return create("Engineer");
+				case SALESMAN:
+					return create("Salesman");
+				case MANAGER:
+					return create("Manager");
+				default:
+					throw new IllegalArgumentException("Incorrect type code value");
+			}
+		}
+	}	
+to:
+
+static Employee create(String name) {
+	try {
+		return (Employee) Class.forName(name).newInstance();
+	}catch(Exception e) {
+		throw new IllegalArgumentException("Unable to instantiate" + name);
+	}
+}
+
+```
+
+Form Template Method
+if you have some subclasses, and there are some methods need to be operated in the same sequence,but different in 
+implementation.This requirement ask us to make the operations in independent methods and make sure that they have 
+same signiture,so the original method is same,and we can pull original method up to superclass.
+
+```	
+public String statement() {
+	Enumeration rentals = _rentals.elements();
+	String result = "Rental Record for" + getName() + "\n";
+	while (rentals.hasMoreElements()) {
+		Rental each = (Rental)rentals.nextElement();
+		// show figures for this rental
+		result += "\t" + each.getMovie().getTile() + "\t" +
+			String.valueOf(each.getCharge()) + "\n";
+	}
+	
+	//add footer lines
+	result += "Amount owed is" + String.valueOf(getTotalCharge()) +"\n";
+	result += "You earned" + String.valueOf(getTotalFrequentRenterPoints())
+		+ " frequent renter points";
+		return result;
+}
+
+
+public String htmlStatement() {
+	Enumeration rentals = _rentals.elements();
+	String result = "<H1>Rentals for <EM>" + getName() + "</EM</H1><P>"
+	...
+}
+
+public String textStatement() {
+	Enumeration rentals = _rentals.elements();
+	String result = "Rental Record for" + getName() + "\n";
+	while (rentals.hasMoreElements()) {
+		Rental each = (Rental)rentals.nextElement();
+		// show figures for this rental
+		result += "\t" + each.getMovie().getTile() + "\t" +
+			String.valueOf(each.getCharge()) + "\n";
+	}
+	
+	//add footer lines
+	result += "Amount owed is" + String.valueOf(getTotalCharge()) +"\n";
+	result += "You earned" + String.valueOf(getTotalFrequentRenterPoints())
+		+ " frequent renter points";
+		return result;
+}
+
+to:
+
+class Statement...
+	public String value(Customer aCustomer) {
+		Enumeration rentals = aCustomer.getRentals();
+		String result = headerString(aCustomer);
+		while(rentals.hasMoreElements()) {
+			Rental each = (Rental) rentals.nextElement();
+			result += eachRentalString(each);
+		}
+		result += footerString(aCustomer);
+		return result;
+	}
+	
+	abstract String headerString(Customer aCustomer);
+	abstract String eachRentalString(Customer aCustomer);
+	abstract String footerString(Customer aCustomer);
+	...
 ```
 
 ```	
@@ -960,10 +1052,7 @@ Replace Constructor with Factory Method
 ```	
 ```
 
-```	
-```
 
-v
 ```	
 ```
 
