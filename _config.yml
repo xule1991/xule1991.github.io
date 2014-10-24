@@ -1,5 +1,5 @@
 title:            xule
-description:      让营地比你来时更干净
+description:      让营地比你来时更干净 (Single Responsibility Principle)
 url:              
 baseurl:          # Base url. ( if use subdirectory-like URL )
 signoff:          xule # Your name.
