@@ -117,8 +117,101 @@ tags: [Reading]
 		}
 		
 		private void parseElements(String argChar) throws ArgsException {
-			
+			if (setArgument(argChar)) 
+				argsFound.add(argChar);
+			else {
+				unexpectedArguments.add(argChar);
+				errorCode = ErrorCode.UNEXPECTED_ARGUMENT;
+				valid = false;
+			}
 		}
+		
+		private boolean setArgument(char argChar) throws ArgsException {
+			if (isBooleanArg(argChar))
+				setBooleanArg(argChar, true);
+			else if (isStringArg(argChar))
+				setStringArg(argChar);
+			else if (isIntArg(argChar))
+				setIntArg(argChar);
+			else 
+				return false;
+			return true;
+		}
+		
+		private boolean isIntArg(char argChar) {
+			return intArgs.containKey(argChar);
+		}
+		
+		private void setIntArg(char argChar) throws ArgsException{
+			currentArgument++;
+			String parameter = null;
+			try {
+				parameter = args[currentArgument];
+				intArgs.put(argChar, new Integer(parameter));
+			} catch (ArrayIndexOutOfBoundsException e) {
+				valid = false;
+				errorArgumentId = argChar;
+				errorCode = ErrorCode.MISSING_INTEGER;
+				throws new ArgsException();
+			} catch (NumberFormatException e) {
+				valid = false;
+				errorArgumentId = argChar;
+				errorParameter = parameter;
+				errorCode = ErrorCode.INVALID_INTEGER;
+				throw new ArgsException();
+			}
+		}
+		
+		private void setStringArg(char argChar) throws ArgsException {
+			currentArgument++;
+			try {
+				stringArgs.put(argChar, args[currentArgument]);
+			} catch (ArrayIndexOutOfBoundsException e) {
+				valid = false;
+				errorArgumentId = argChar;
+				errorCode = ErrorCode.MISSING_STRING;
+				throw new ArgsException();
+			}
+		}
+		
+		private boolean isStringArg(char argChar) {
+			return stringArgs.containKey(argChar);
+		}
+		
+		private void setBooleanArg(char argChar, boolean value) {
+			booleanArgs.put(argChar, value);
+		}
+		
+		private boolean isBooleanArg(char argChar) {
+			return booleanArgs.containsKey(argChar);
+		}
+		
+		public int cardinality() {
+			return argsFound.size();
+		}
+		
+		public String usage() {
+			if (schema.length() > 0)
+				return "-[" + schema + "]";
+			else
+				return "";
+		}
+		
+		public String errorMessage() throws Exception {
+			switch (errorCode) {
+				case OK:
+					throw new Exception("TILT: Should not get here.");
+				case UNEXPECTED_ARGUMENT:
+					return unexpectedArgumentMessage();
+				case MISSING_STRING:
+					return String.format("Could not find string parameter for -%c", errorArgumentId);
+				case INVALID_INTEGER:
+					return String.format("Could not find string integer parameter for -%c", errorArgumentId);
+			}
+			return "";
+		}
+		
+		...
 	}
 ```
 

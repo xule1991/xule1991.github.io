@@ -1,5 +1,5 @@
 title:            xule
-description:      让营地比你来时更干净 (Single Responsibility Principle)
+description:      让营地比你来时更干净 (Single Responsibility Principle) code on the wrong layer of abstraction
 url:              
 baseurl:          # Base url. ( if use subdirectory-like URL )
 signoff:          xule # Your name.
