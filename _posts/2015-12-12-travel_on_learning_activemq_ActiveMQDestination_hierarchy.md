@@ -1,6 +1,6 @@
 ---
 layout: post
-title: LearningActiveMq_ActiveMQDestination
+title: LearningActiveMq_ActiveMQDestination_Hierarchy
 tags: [activemq_learning]
 ---
 
@@ -101,6 +101,25 @@ public String getDestinationTypeAsString() {
         }
     }
 ```
+
+###ActiveMQTempDestination contains ActiveMQConnection, which can be used to remove this destination
+```
+public abstract class ActiveMQTempDestination extends ActiveMQDestination {
+...
+
+    protected transient ActiveMQConnection connection;
+
+...
+public void delete() throws JMSException {
+        if (connection != null) {
+            connection.deleteTempDestination(this);
+        }
+    }
+...
+
+```
+### ActiveMQTempTopic extends ActiveMQTempDestination implements TemporaryTopic, ActiveMQTempTopic contains delete() method, which in not implemented by ActiveMQTempTopic, but it is inherit directly from ActiveMQTempDestination 
+
 
 
     
