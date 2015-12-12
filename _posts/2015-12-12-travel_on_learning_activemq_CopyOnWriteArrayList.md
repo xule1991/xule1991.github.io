@@ -66,7 +66,7 @@ tags: [activemq_learning]
     }
 ```
 
-###but CopyOnWriteArrayList has a special iterator, which do not support modification operation,because, the array in mem iterator point to may be not the array variable point to.
+###but CopyOnWriteArrayList has a special iterator, which do not support modification operation,because, the array in mem iterator point to may be not the array variable point to.BTW, there will be no ConcurrentModifictionException through during iterating through the list.
 
 ```
     /**
