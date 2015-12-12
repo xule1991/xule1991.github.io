@@ -1,6 +1,6 @@
 ---
 layout: post
-title: LearningActiveMq (1)
+title: LearningActiveMq (2)
 tags: [activemq_learning]
 ---
 
@@ -70,10 +70,141 @@ tags: [activemq_learning]
 
 ```
 
+#####Consumer
+```java
+public static void main(String[] args) throws JMSException {  
+    Consumer consumer = new Consumer();  
+    for (String stock : args) {  
+    Destination destination = consumer.getSession().createTopic("STOCKS." + stock);  
+    MessageConsumer messageConsumer = consumer.getSession().createConsumer(destination);  
+    messageConsumer.setMessageListener(new Listener());  
+    }  
+}  
+      
+public Session getSession() {  
+    return session;  
+}  
+
+...
+
+public class Listener implements MessageListener {  
+  
+    public void onMessage(Message message) {  
+        try {  
+            MapMessage map = (MapMessage)message;  
+            String stock = map.getString("stock");  
+            double price = map.getDouble("price");  
+            double offer = map.getDouble("offer");  
+            boolean up = map.getBoolean("up");  
+            DecimalFormat df = new DecimalFormat( "#,###,###,##0.00" );  
+            System.out.println(stock + "\t" + df.format(price) + "\t" + df.format(offer) + "\t" + (up?"up":"down"));  
+        } catch (Exception e) {  
+            e.printStackTrace();  
+        }  
+    }  
+  
+} 
+
+
+
+
+```
+
 ###P2P
    ![](http://dl2.iteye.com/upload/attachment/0086/5406/847f46bb-3d45-3e6f-b663-05669360c5b1.jpg)
    
-   ###Request&Response
+####Sender
+```java
+
+public Publisher() throws JMSException {  
+    factory = new ActiveMQConnectionFactory(brokerURL);  
+    connection = factory.createConnection();  
+    connection.start();  
+    session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);  
+    producer = session.createProducer(null);  
+}  
+
+...
+
+public void sendMessage() throws JMSException {  
+    for(int i = 0; i < jobs.length; i++)  
+    {  
+        String job = jobs[i];  
+        Destination destination = session.createQueue("JOBS." + job);  
+        Message message = session.createObjectMessage(i);  
+        System.out.println("Sending: id: " + ((ObjectMessage)message).getObject() + " on queue: " + destination);  
+        producer.send(destination, message);  
+    }  
+}  
+
+...
+
+public static void main(String[] args) throws JMSException {  
+    Publisher publisher = new Publisher();  
+    for(int i = 0; i < 10; i++) {  
+        publisher.sendMessage();  
+        System.out.println("Published " + i + " job messages");  
+    try {  
+            Thread.sleep(1000);  
+        } catch (InterruptedException x) {  
+        e.printStackTrace();  
+        }  
+    }  
+    publisher.close();  
+}  
+
+
+```
+####Receiver
+
+```java
+public Consumer() throws JMSException {  
+        factory = new ActiveMQConnectionFactory(brokerURL);  
+        connection = factory.createConnection();  
+        connection.start();  
+        session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);  
+    }  
+    ...
+    public static void main(String[] args) throws JMSException {  
+        Consumer consumer = new Consumer();  
+        for (String job : consumer.jobs) {  
+            Destination destination = consumer.getSession().createQueue("JOBS." + job);  
+            MessageConsumer messageConsumer = consumer.getSession().createConsumer(destination);  
+            messageConsumer.setMessageListener(new Listener(job));  
+        }  
+    }  
+      
+    public Session getSession() {  
+        return session;  
+    }
+    
+    ...
+    
+    import javax.jms.Message;  
+import javax.jms.MessageListener;  
+import javax.jms.ObjectMessage;  
+  
+public class Listener implements MessageListener {  
+  
+    private String job;  
+      
+    public Listener(String job) {  
+        this.job = job;  
+    }  
+  
+    public void onMessage(Message message) {  
+        try {  
+            //do something here  
+            System.out.println(job + " id:" + ((ObjectMessage)message).getObject());  
+        } catch (Exception e) {  
+            e.printStackTrace();  
+        }  
+    }  
+  
+}  
+
+```
+###Request and Response
    ![](http://dl2.iteye.com/upload/attachment/0086/5402/b031376e-2af7-3502-b235-8c4db1ad890f.jpg)
 ```
     
