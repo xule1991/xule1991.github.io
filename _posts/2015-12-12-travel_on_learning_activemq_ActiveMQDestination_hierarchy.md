@@ -77,7 +77,7 @@ tags: [activemq_learning]
     }
 ```
 
-###getDestinationType() is override by its child class then using switch to defined which ActiveMQDestination it is
+###getDestinationType() is override by its child class then using switch to distinguish which ActiveMQDestination it is
 
 ```
 public abstract byte getDestinationType();
@@ -118,7 +118,7 @@ public void delete() throws JMSException {
 ...
 
 ```
-### ActiveMQTempTopic extends ActiveMQTempDestination implements TemporaryTopic, ActiveMQTempTopic contains delete() method, which in not implemented by ActiveMQTempTopic, but it is inherit directly from ActiveMQTempDestination 
+### ActiveMQTempTopic extends ActiveMQTempDestination implements TemporaryTopic, ActiveMQTempTopic contains delete() method, which is not implemented by ActiveMQTempTopic, but it is inherit directly from ActiveMQTempDestination 
 
 
 
