@@ -1,5 +1,4 @@
 ---
----
 layout: post
 title: First post on commons-pool
 tags: [commons-pool]
@@ -23,8 +22,8 @@ tags: [commons-pool]
 	void releaseConnection(String url, String db, Connection connection)// maybe it should not be called release
 	
 	ConnectionsImpl which implements Connections contains:
-	
-	private final int POOL_SIZE = 3;
+
+	private final int POOL_SIZE = 3; // init connection number for 
     private final String URL_FORMAT = "jdbc:mysql://%s:3306/%s";
 
 ```
@@ -35,7 +34,7 @@ tags: [commons-pool]
  - C
  - D
  
- ```
+```
 123DFJLKAJLK 
 ```
 
