@@ -12,6 +12,7 @@ title: About
 ##find me：
 - QQ:   932803606
 - Email: xule1991@gmail.com
-- Mobile: 18625189253
+- Mobile: 13162003616
+- Wechat: 13162003616
 
 
