@@ -8,7 +8,6 @@ tags: [java concurrency]
 >Lock lock = new ReentrantLock();
 >Condition notFull = lock.newCondition();
 >Condition notEmpty = lock.newCondition();
->
 >Condition(signal, await), Object(notify, wait) 
 
 
